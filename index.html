@@ -1,0 +1,129 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080b14">
+  <meta name="description" content="Portafolio de prácticas de Administración de Redes: FTP, DNS, HTTP, SSH y DHCP.">
+  <title>NetLab — Administración de Redes</title>
+  <style>
+    .card{cursor:pointer}.card:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+    .service-modal{position:fixed;inset:0;z-index:10;display:grid;place-items:center;padding:20px;background:rgba(3,6,13,.78);backdrop-filter:blur(10px);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+    .service-modal.open{opacity:1;visibility:visible}.modal-panel{position:relative;width:min(720px,100%);max-height:92vh;overflow-y:auto;padding:30px;border:1px solid rgba(125,153,208,.22);border-radius:18px;background:radial-gradient(ellipse at 100% 0,rgba(78,118,205,.16),transparent 55%),#101522;box-shadow:0 28px 100px rgba(0,0,0,.5);transform:translateY(14px) scale(.98);transition:transform .25s}.service-modal.open .modal-panel{transform:translateY(0) scale(1)}.modal-close{position:absolute;top:14px;right:15px;width:34px;height:34px;border:1px solid var(--line);border-radius:9px;color:#b8c3d9;background:#151c2b;font-size:20px;cursor:pointer}.modal-kicker{font:10px var(--mono);letter-spacing:.18em;color:var(--accent)}.modal-panel h2{font-size:35px;letter-spacing:-.05em;margin:13px 0 4px}.modal-port{font:10px var(--mono);color:var(--accent)}.modal-panel p{font-size:13px;line-height:1.85;color:#a5b0c4;margin:16px 0}.preview-label{font:10px var(--mono);letter-spacing:.12em;color:#8d9bb3;margin:19px 0 8px}.pdf-preview{display:block;width:100%;height:min(48vh,390px);border:1px solid var(--line);border-radius:10px;background:#fff}.modal-download{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;margin-top:14px;padding:13px;border-radius:9px;background:var(--accent);color:#081018;font-size:12px;font-weight:800;transition:filter .2s,transform .2s}.modal-download:hover{filter:brightness(1.13);transform:translateY(-2px)}.modal-download svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2}
+    @media(max-width:500px){.modal-panel{padding:27px 22px}.modal-panel h2{font-size:30px}.pdf-preview{height:42vh}}
+  </style>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
+    :root{color-scheme:dark;--bg:#080b14;--panel:#101522;--line:rgba(149,171,212,.13);--muted:#8d98ad;--text:#eff3ff;--cyan:#54e6dc;--blue:#7795ff;--purple:#b18cff;--mono:'DM Mono',monospace;--sans:'Manrope',sans-serif}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden}body:before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(ellipse at 17% 13%,rgba(36,82,164,.18),transparent 39%),radial-gradient(ellipse at 88% 36%,rgba(112,59,180,.12),transparent 35%),linear-gradient(rgba(117,147,204,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(117,147,204,.035) 1px,transparent 1px);background-size:auto,auto,48px 48px,48px 48px;mask-image:linear-gradient(to bottom,#000 0%,#000 72%,transparent 100%)}a{color:inherit;text-decoration:none}.wrap{width:min(1120px,calc(100% - 48px));margin:auto}.topbar{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.brand{display:flex;gap:11px;align-items:center;font-size:14px;font-weight:800;letter-spacing:.11em}.brand-icon{width:34px;height:34px;border:1px solid rgba(84,230,220,.42);border-radius:10px;display:grid;place-items:center;color:var(--cyan);background:rgba(84,230,220,.08);box-shadow:0 0 24px rgba(84,230,220,.09)}.brand-icon svg{width:18px}.brand small{display:block;color:var(--muted);font-size:9px;font-weight:500;letter-spacing:.12em;margin-top:3px}.nav{display:flex;gap:25px;align-items:center;font-size:12px;color:#aeb8cb}.nav a:hover{color:var(--cyan)}.status{font:10px var(--mono);color:var(--cyan);border:1px solid rgba(84,230,220,.2);padding:8px 11px;border-radius:20px;background:rgba(84,230,220,.05)}.status i{display:inline-block;width:6px;height:6px;background:var(--cyan);border-radius:50%;margin-right:7px;box-shadow:0 0 9px var(--cyan)}.hero{position:relative;padding:92px 0 60px;min-height:410px}.eyebrow{font:10px var(--mono);letter-spacing:.2em;color:var(--cyan);display:flex;align-items:center;gap:9px}.eyebrow:before{content:"";height:1px;width:24px;background:var(--cyan)}h1{font-size:clamp(42px,7vw,75px);line-height:1.07;letter-spacing:-.065em;margin:23px 0 16px;max-width:720px;font-weight:700}.gradient{background:linear-gradient(100deg,#fbfdff 8%,#93aaff 59%,#68eee0);color:transparent;background-clip:text}.intro{color:#9da8bc;max-width:540px;line-height:1.8;font-size:14px;margin:0}.hero-meta{display:flex;gap:28px;margin-top:36px}.meta{font:10px var(--mono);color:#7d8aa1;letter-spacing:.04em}.meta b{color:#dbe4f8;font-weight:400;margin-left:7px}.orbit{position:absolute;width:260px;height:260px;right:5%;top:80px;border:1px solid rgba(118,149,255,.12);border-radius:50%;display:grid;place-items:center;animation:float 7s ease-in-out infinite}.orbit:before,.orbit:after{content:"";position:absolute;border:1px solid rgba(84,230,220,.11);border-radius:50%}.orbit:before{inset:24px}.orbit:after{inset:53px;border-color:rgba(177,140,255,.15)}.orbit-core{width:70px;height:70px;display:grid;place-items:center;border-radius:22px;color:var(--cyan);background:linear-gradient(145deg,rgba(84,230,220,.14),rgba(119,149,255,.12));border:1px solid rgba(84,230,220,.27);box-shadow:0 0 45px rgba(84,230,220,.13)}.orbit-core svg{width:34px}.orbit-dot{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 15px var(--cyan)}.d1{top:35px;left:59px}.d2{right:28px;top:123px;background:var(--purple);box-shadow:0 0 15px var(--purple)}.d3{bottom:43px;left:53px;background:var(--blue);box-shadow:0 0 15px var(--blue)}.section-head{display:flex;justify-content:space-between;align-items:end;margin:8px 0 21px}.section-title{font-size:19px;font-weight:700;letter-spacing:-.035em}.section-sub{font-size:11px;color:var(--muted);margin-top:6px}.mono{font:10px var(--mono);color:#77849c}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding-bottom:75px}.card{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:linear-gradient(145deg,rgba(18,24,39,.95),rgba(12,16,27,.96));padding:20px;min-height:256px;transition:transform .25s,border-color .25s,box-shadow .25s;animation:rise .65s both}.card:nth-child(2){animation-delay:.08s}.card:nth-child(3){animation-delay:.16s}.card:nth-child(4){animation-delay:.24s}.card:nth-child(5){animation-delay:.32s}.card:hover{transform:translateY(-4px);border-color:rgba(84,230,220,.35);box-shadow:0 13px 40px rgba(0,0,0,.22)}.card:before{content:"";position:absolute;inset:0 auto auto 20px;width:42px;height:1px;background:var(--accent);box-shadow:0 0 14px var(--accent)}.card-top{display:flex;align-items:start;justify-content:space-between}.service-icon{width:40px;height:40px;border-radius:11px;border:1px solid color-mix(in srgb,var(--accent) 25%,transparent);background:color-mix(in srgb,var(--accent) 9%,transparent);color:var(--accent);display:grid;place-items:center}.service-icon svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.number{font:10px var(--mono);color:#69758c}.card h2{font-size:17px;letter-spacing:-.03em;margin:17px 0 5px}.port{font:10px var(--mono);color:var(--accent)}.card p{font-size:11px;color:#8e9ab0;line-height:1.7;margin:12px 0 19px;min-height:37px}.download{display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid color-mix(in srgb,var(--accent) 25%,transparent);border-radius:8px;padding:10px;color:var(--accent);font-size:10px;background:color-mix(in srgb,var(--accent) 6%,transparent);transition:.2s}.download:hover{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);transform:translateY(-1px)}.download svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8}.note{padding:14px 17px;border:1px solid var(--line);border-radius:10px;background:rgba(16,21,34,.75);display:flex;gap:11px;align-items:start;margin-top:-48px;margin-bottom:54px;color:#8c99b0;font-size:10px;line-height:1.7}.note strong{color:#cbd6ea;font-weight:600}.note svg{width:16px;flex:none;color:var(--blue);margin-top:1px}.footer{border-top:1px solid var(--line);padding:22px 0 28px;display:flex;justify-content:space-between;color:#6f7b92;font:9px var(--mono);letter-spacing:.03em}.footer b{color:#9caac2;font-weight:400}@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}@media(max-width:760px){.orbit{opacity:.34;right:-116px;top:65px;transform:scale(.8)}.nav{gap:13px}.nav a:nth-child(n+3){display:none}.hero{padding:74px 0 48px}.hero-meta{gap:14px;flex-wrap:wrap}.cards{grid-template-columns:repeat(2,1fr)}.card{min-height:245px}}@media(max-width:500px){.wrap{width:calc(100% - 32px)}.topbar{height:66px}.status{font-size:8px;padding:7px 8px}.hero{padding-top:65px;min-height:385px}h1{font-size:48px}.orbit{top:42px;right:-157px;transform:scale(.67);opacity:.28}.cards{grid-template-columns:1fr;gap:11px}.card{min-height:0}.card p{min-height:0;margin-bottom:15px}.section-head{align-items:start}.mono{font-size:8px}.note{margin-top:-49px}.footer{gap:12px;flex-wrap:wrap}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+  <header class="wrap topbar">
+    <a class="brand" href="#inicio"><span class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/><path d="M7 7h.01M7 17h.01M11 7h6M11 17h6"/></svg></span><span>NETLAB<small>ADMINISTRACIÓN DE REDES</small></span></a>
+    <nav class="nav"><a href="#inicio">Inicio</a><a href="#practicas">Prácticas</a><span class="status"><i></i>LABORATORIO ACTIVO</span></nav>
+  </header>
+  <main class="wrap">
+    <section class="hero" id="inicio">
+      <div class="eyebrow">PORTAFOLIO DE PRÁCTICAS · 2025—2026</div>
+      <h1>El mundo conectado,<br><span class="gradient">capa por capa.</span></h1>
+      <p class="intro">Configuración y administración de servicios de red. Explora las prácticas del laboratorio y consulta el reporte de cada protocolo.</p>
+      <div class="hero-meta"><span class="meta">ASIGNATURA<b>Administración de Redes</b></span><span class="meta">PRÁCTICAS<b>05 servicios</b></span><span class="meta">FORMATO<b>PDF</b></span></div>
+      <div class="orbit" aria-hidden="true"><i class="orbit-dot d1"></i><i class="orbit-dot d2"></i><i class="orbit-dot d3"></i><div class="orbit-core"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(-30 12 12)"/><path d="M12 2v20M2 12h20"/></svg></div></div>
+    </section>
+    <section id="practicas">
+      <div class="section-head"><div><div class="section-title">Prácticas del laboratorio</div><div class="section-sub">Descarga el reporte PDF correspondiente a cada servicio.</div></div><span class="mono">01 — 05 &nbsp; / &nbsp; SERVICIOS</span></div>
+      <div class="cards">
+        <article class="card" style="--accent:#54e6dc"><div class="card-top"><span class="service-icon"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 17h16M7 4v6m10 4v6M4 12h16"/><circle cx="7" cy="7" r="2"/><circle cx="17" cy="17" r="2"/></svg></span><span class="number">01 / 05</span></div><h2>FTP</h2><span class="port">FILE TRANSFER · :21</span><p>Transferencia de archivos entre cliente y servidor.</p><a class="download" href="pdfs/FTP.pdf" download="FTP.pdf"><svg viewBox="0 0 24 24"><path d="M12 4v12m-4-4 4 4 4-4M4 17v3h16v-3"/></svg>Descargar reporte PDF</a></article>
+        <article class="card" style="--accent:#7795ff"><div class="card-top"><span class="service-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/><path d="M7 6h.01M17 18h.01"/></svg></span><span class="number">02 / 05</span></div><h2>DNS</h2><span class="port">DOMAIN NAMES · :53</span><p>Resolución de nombres de dominio y configuración de zonas.</p><a class="download" href="pdfs/DNS.pdf" download="DNS.pdf"><svg viewBox="0 0 24 24"><path d="M12 4v12m-4-4 4 4 4-4M4 17v3h16v-3"/></svg>Descargar reporte PDF</a></article>
+        <article class="card" style="--accent:#b18cff"><div class="card-top"><span class="service-icon"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM4 9h16M8 7h.01M6 16l3-3 3 3 3-4 3 4"/></svg></span><span class="number">03 / 05</span></div><h2>HTTP</h2><span class="port">WEB SERVER · :80 / :443</span><p>Servidor web, publicación de sitios y acceso mediante HTTP.</p><a class="download" href="pdfs/HTTP.pdf" download="HTTP.pdf"><svg viewBox="0 0 24 24"><path d="M12 4v12m-4-4 4 4 4-4M4 17v3h16v-3"/></svg>Descargar reporte PDF</a></article>
+        <article class="card" style="--accent:#ffb86b"><div class="card-top"><span class="service-icon"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/></svg></span><span class="number">04 / 05</span></div><h2>SSH</h2><span class="port">SECURE SHELL · :22</span><p>Acceso remoto seguro y administración cifrada del servidor.</p><a class="download" href="pdfs/SSH.pdf" download="SSH.pdf"><svg viewBox="0 0 24 24"><path d="M12 4v12m-4-4 4 4 4-4M4 17v3h16v-3"/></svg>Descargar reporte PDF</a></article>
+        <article class="card" style="--accent:#6de5a4"><div class="card-top"><span class="service-icon"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="6" rx="2"/><rect x="4" y="14" width="16" height="6" rx="2"/><path d="M8 7h.01M8 17h.01M12 7h5m-5 10h5M2 12h3m14 0h3"/></svg></span><span class="number">05 / 05</span></div><h2>DHCP</h2><span class="port">DYNAMIC HOST · :67 / :68</span><p>Asignación dinámica de direcciones IP y parámetros de red.</p><a class="download" href="pdfs/DHCP.pdf" download="DHCP.pdf"><svg viewBox="0 0 24 24"><path d="M12 4v12m-4-4 4 4 4-4M4 17v3h16v-3"/></svg>Descargar reporte PDF</a></article>
+      </div>
+      <aside class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></svg><span><strong>Desarrolladores:</strong><br>• Camacho Davalos José Martin<br>• Velazquez Galindo Josue Eduardo<br>• Gutiérrez Chávez Juan Carlos<br>• Mancilla Contreras Sergio Armando</span></aside>
+    </section>
+  </main>
+  <footer class="wrap footer"><span>NETLAB <b>· ADMINISTRACIÓN DE REDES</b></span><span>PRÁCTICAS DE SERVICIOS &nbsp; / &nbsp; 2025—2026</span></footer>
+  <div class="service-modal" id="serviceModal" aria-hidden="true">
+    <section class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDescription">
+      <button class="modal-close" type="button" aria-label="Cerrar ventana">×</button>
+      <div class="modal-kicker">SERVICIO DE RED · <span id="modalNumber">01 / 05</span></div>
+      <h2 id="modalTitle">Servicio</h2>
+      <div class="modal-port" id="modalPort"></div>
+      <p id="modalDescription"></p>
+      <div class="preview-label">VISTA PREVIA DEL REPORTE</div>
+      <iframe class="pdf-preview" id="pdfPreview" title="Vista previa del reporte PDF"></iframe>
+      <a class="modal-download" id="modalDownload" href="#" download>
+        <svg viewBox="0 0 24 24"><path d="M12 4v12m-4-4 4 4 4-4M4 17v3h16v-3"/></svg>
+        Descargar reporte PDF
+      </a>
+    </section>
+  </div>
+  <script>
+    const serviceOrder = ['DHCP', 'DNS', 'SSH', 'FTP', 'HTTP'];
+    const serviceInfo = {
+      DHCP: 'DHCP asigna automáticamente a cada dispositivo una dirección IP y otros parámetros necesarios para comunicarse en la red, como la puerta de enlace y los servidores DNS. Esto simplifica la configuración y ayuda a evitar direcciones duplicadas.',
+      DNS: 'DNS traduce nombres de dominio fáciles de recordar a direcciones IP que los equipos utilizan para localizar servidores. En la práctica se configuran zonas y registros para que los clientes puedan resolver los nombres de la red.',
+      SSH: 'SSH permite conectarse de forma remota y segura a otro equipo para administrarlo desde una terminal. La comunicación viaja cifrada, lo que protege las credenciales y los comandos frente a terceros.',
+      FTP: 'FTP permite transferir archivos entre un cliente y un servidor a través de una red. En esta práctica se configura el servicio y se comprueba el acceso y el intercambio de archivos entre ambos equipos.',
+      HTTP: 'HTTP es el protocolo que permite a un navegador solicitar páginas y recursos a un servidor web. En la práctica se prepara el servidor, se publican archivos del sitio y se comprueba el acceso desde un cliente.'
+    };
+    const cards = [...document.querySelectorAll('.card')];
+    const cardsContainer = document.querySelector('.cards');
+    serviceOrder.forEach((name, index) => {
+      const card = cards.find(item => item.querySelector('h2').textContent.trim() === name);
+      if (!card) return;
+      card.dataset.service = name;
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'button');
+      card.setAttribute('aria-haspopup', 'dialog');
+      card.setAttribute('aria-label', `Ver información del servicio ${name}`);
+      card.querySelector('.number').textContent = `${String(index + 1).padStart(2, '0')} / 05`;
+      card.querySelector('.download')?.remove();
+      cardsContainer.append(card);
+    });
+    const modal = document.querySelector('#serviceModal');
+    const closeButton = modal.querySelector('.modal-close');
+    const downloadButton = modal.querySelector('#modalDownload');
+    const pdfPreview = modal.querySelector('#pdfPreview');
+    let lastCard = null;
+    function openService(card) {
+      const name = card.dataset.service;
+      lastCard = card;
+      modal.style.setProperty('--accent', getComputedStyle(card).getPropertyValue('--accent'));
+      modal.querySelector('#modalTitle').textContent = name;
+      modal.querySelector('#modalNumber').textContent = card.querySelector('.number').textContent;
+      modal.querySelector('#modalPort').textContent = card.querySelector('.port').textContent;
+      modal.querySelector('#modalDescription').textContent = serviceInfo[name];
+      downloadButton.href = `pdfs/${name}.pdf`;
+      downloadButton.download = `${name}.pdf`;
+      pdfPreview.src = `pdfs/${name}.pdf#toolbar=0&navpanes=0`;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      closeButton.focus();
+    }
+    function closeService() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      pdfPreview.src = 'about:blank';
+      document.body.style.overflow = '';
+      lastCard?.focus();
+    }
+    cardsContainer.addEventListener('click', event => {
+      const card = event.target.closest('.card');
+      if (card) openService(card);
+    });
+    cardsContainer.addEventListener('keydown', event => {
+      if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('.card')) {
+        event.preventDefault();
+        openService(event.target);
+      }
+    });
+    closeButton.addEventListener('click', closeService);
+    modal.addEventListener('click', event => { if (event.target === modal) closeService(); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape' && modal.classList.contains('open')) closeService(); });
+  </script>
+</body>
+</html>
